@@ -10,40 +10,46 @@ const { setDate } = actions;
 
 const CalendarTime = () => {
   const [values, setValues] = useState({});
-  console.log("values: ", moment(values).format("YYYY-MM-DD"));
 
   const { disableDateList } = useSelector((s) => s.dates);
-  console.log("disableDateList: ", disableDateList);
 
-  const disableDateObjects = disableDateList.map((dateString) =>
-    new Date(moment(dateString).format("YYYY-MM-DD")).getDate()
+  const disableDateObjects = disableDateList.map(
+    (dateString) => new Date(moment(dateString).format("YYYY-MM-DD"))
   );
-
-  console.log("disableDateObjects: ", disableDateObjects);
 
   const dispatch = useDispatch();
 
   const disableClick = () => {
-    if (values === null) {
-      toast.error("please select date ");
+    if (!values.date) {
+      toast.error("Please select a date.");
     } else {
-      dispatch(setDate([...disableDateList, values]));
-      setValues(null);
-      toast.success("date disable successfully");
+      const selectedDate = moment(values.date).format("YYYY-MM-DD");
+
+      if (disableDateList.includes(selectedDate)) {
+        toast.error("This date is already disabled.");
+      } else {
+        dispatch(setDate([...disableDateList, selectedDate]));
+        setValues({});
+        toast.success("Date disabled successfully.");
+      }
     }
   };
 
   return (
     <CalendarStyle>
-      <h1>select Date and click button to disable that date</h1>
+      <h1>Select a date and click the button to disable that date</h1>
       <Calendar
         className={"REACT-CALENDAR p-2"}
         view="month"
         onClickDay={(date) => {
-          setValues((prev) => ({ ...prev, date: moment(date, "yyyy-MM-dd") }));
+          setValues({ date: moment(date, "yyyy-MM-dd") });
         }}
-        onChange={(date) => setValues(date)}
-        tileDisabled={({ date }) => disableDateObjects.includes(date.getDate())}
+        onChange={(date) => setValues({ date })}
+        tileDisabled={({ date }) =>
+          disableDateObjects.some((disabledDate) =>
+            moment(date).isSame(disabledDate, "day")
+          )
+        }
       />
       <button onClick={disableClick} className="disable-btn">
         Disable Date
