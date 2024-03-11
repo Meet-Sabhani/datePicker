@@ -11,7 +11,7 @@ const { setDayDisable } = actions;
 const DayDisable = () => {
   const [values, setValues] = useState({});
 
-  const { dayDisableDateList } = useSelector((s) => s.dates) || [];
+  const { dayDisableDateList } = useSelector((state) => state.dayDisable) || [];
 
   const disableDateObjects = dayDisableDateList?.map(
     (dateString) => new Date(moment(dateString).format("YYYY-MM-DD"))
