@@ -4,6 +4,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../redux/action";
 import { CalendarStyle } from "./CalendarStyle";
+import { toast } from "react-toastify";
 
 const { setDate } = actions;
 
@@ -23,8 +24,13 @@ const CalendarTime = () => {
   const dispatch = useDispatch();
 
   const disableClick = () => {
-    dispatch(setDate([...disableDateList, values]));
-    setValues("");
+    if (values === null) {
+      toast.error("please select date ");
+    } else {
+      dispatch(setDate([...disableDateList, values]));
+      setValues(null);
+      toast.success("date disable successfully");
+    }
   };
 
   return (
