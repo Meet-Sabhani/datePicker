@@ -1,14 +1,16 @@
 import React from "react";
 import { GlobalStyle } from "./GlobalStyle";
-import CalendarTime from "./components/DateDisable";
 import "react-calendar/dist/Calendar.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import DayDisable from "./components/DayDisable/DayDisable";
+import { WeekDay } from "./components/weekDays/WeekDay";
 export const App = () => {
   return (
     <>
       <GlobalStyle />
-      <CalendarTime />
+      {/* <WeekDay /> */}
+      <DayDisable />
       <ToastContainer
         position="top-right"
         autoClose={5000}

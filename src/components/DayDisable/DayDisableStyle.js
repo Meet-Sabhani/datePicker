@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CalendarStyle = styled.div`
+export const DayDisableStyle = styled.div`
   display: flex;
   justify-content: flex-start;
   padding: 20px;

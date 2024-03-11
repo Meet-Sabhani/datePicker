@@ -1,19 +1,19 @@
 import actions from "./action";
 
 const initialState = {
-  disableDateList: [],
+  dayDisableDateList: [],
 };
 
-const dates = (state = initialState, action) => {
+const dayDisable = (state = initialState, action) => {
   switch (action.type) {
     case actions.SET_DATE:
       return {
         ...state,
-        disableDateList: action.data,
+        dayDisableDateList: action.data,
       };
     default:
       return state;
   }
 };
 
-export default dates;
+export default dayDisable;

@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import actions from "../redux/action";
-import { CalendarStyle } from "./CalendarStyle";
+import actions from "../../redux/action";
 import { toast } from "react-toastify";
+import { DayDisableStyle } from "./DayDisableStyle";
 
-const { setDate } = actions;
+const { setDayDisable } = actions;
 
-const CalendarTime = () => {
+const DayDisable = () => {
   const [values, setValues] = useState({});
 
-  const { disableDateList } = useSelector((s) => s.dates);
+  const { dayDisableDateList } = useSelector((s) => s.dates) || [];
 
-  const disableDateObjects = disableDateList.map(
+  const disableDateObjects = dayDisableDateList?.map(
     (dateString) => new Date(moment(dateString).format("YYYY-MM-DD"))
   );
 
@@ -24,19 +24,19 @@ const CalendarTime = () => {
       toast.error("Please select a date.");
     } else {
       const selectedDate = moment(values.date).format("YYYY-MM-DD");
-
-      if (disableDateList.includes(selectedDate)) {
-        toast.error("This date is already disabled.");
-      } else {
-        dispatch(setDate([...disableDateList, selectedDate]));
-        setValues({});
-        toast.success("Date disabled successfully.");
-      }
+      dispatch(setDayDisable([...dayDisableDateList, selectedDate]));
+      setValues({});
+      toast.success("Date disabled successfully.");
     }
   };
 
+  const removeDisable = () => {
+    dispatch(setDayDisable([]));
+    toast.success("removed all disabled dates");
+  };
+
   return (
-    <CalendarStyle>
+    <DayDisableStyle>
       <h1>Select a date and click the button to disable that date</h1>
       <Calendar
         className={"REACT-CALENDAR p-2"}
@@ -46,6 +46,8 @@ const CalendarTime = () => {
         }}
         onChange={(date) => setValues({ date })}
         tileDisabled={({ date }) =>
+          disableDateObjects &&
+          disableDateObjects.length > 0 &&
           disableDateObjects.some((disabledDate) =>
             moment(date).isSame(disabledDate, "day")
           )
@@ -54,8 +56,11 @@ const CalendarTime = () => {
       <button onClick={disableClick} className="disable-btn">
         Disable Date
       </button>
-    </CalendarStyle>
+      <button onClick={removeDisable} className="disable-btn">
+        remove Disable
+      </button>
+    </DayDisableStyle>
   );
 };
 
-export default CalendarTime;
+export default DayDisable;
