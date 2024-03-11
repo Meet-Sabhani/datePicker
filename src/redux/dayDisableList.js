@@ -6,7 +6,7 @@ const initialState = {
 
 const dayDisable = (state = initialState, action) => {
   switch (action.type) {
-    case actions.SET_DATE:
+    case actions.SET_DAY_DISABLE:
       return {
         ...state,
         dayDisableDateList: action.data,

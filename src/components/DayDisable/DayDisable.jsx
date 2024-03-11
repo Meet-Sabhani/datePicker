@@ -10,10 +10,12 @@ const { setDayDisable } = actions;
 
 const DayDisable = () => {
   const [values, setValues] = useState({});
+  console.log("values: ", moment(values.date).format("YYYY-MM-DD"));
 
-  const { dayDisableDateList } = useSelector((state) => state.dayDisable) || [];
+  const { dayDisableDateList } = useSelector((state) => state.dayDisable);
+  console.log("dayDisableDateList: ", dayDisableDateList);
 
-  const disableDateObjects = dayDisableDateList?.map(
+  const disableDateObjects = dayDisableDateList.map(
     (dateString) => new Date(moment(dateString).format("YYYY-MM-DD"))
   );
 
@@ -23,8 +25,12 @@ const DayDisable = () => {
     if (!values.date) {
       toast.error("Please select a date.");
     } else {
-      const selectedDate = moment(values.date).format("YYYY-MM-DD");
-      dispatch(setDayDisable([...dayDisableDateList, selectedDate]));
+      dispatch(
+        setDayDisable([
+          ...dayDisableDateList,
+          moment(values.date).format("YYYY-MM-DD"),
+        ])
+      );
       setValues({});
       toast.success("Date disabled successfully.");
     }
@@ -42,11 +48,10 @@ const DayDisable = () => {
         className={"REACT-CALENDAR p-2"}
         view="month"
         onClickDay={(date) => {
-          setValues({ date: moment(date, "yyyy-MM-dd") });
+          setValues({ date: moment(date, "YYYY-MM-DD") });
         }}
         onChange={(date) => setValues({ date })}
         tileDisabled={({ date }) =>
-          disableDateObjects &&
           disableDateObjects.length > 0 &&
           disableDateObjects.some((disabledDate) =>
             moment(date).isSame(disabledDate, "day")
