@@ -4,13 +4,18 @@ import "react-calendar/dist/Calendar.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import DayDisable from "./components/DayDisable/DayDisable";
-import { WeekDay } from "./components/weekDays/WeekDay";
+import { Route, Routes } from "react-router-dom";
+import { Navbar } from "./components/navbar/Navbar";
+import { TripeBook } from "./components/tripeBook/TripeBook";
 export const App = () => {
   return (
     <>
       <GlobalStyle />
-      {/* <WeekDay /> */}
-      <DayDisable />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<DayDisable />} />
+        <Route path="/tripeBook" element={<TripeBook />} />
+      </Routes>
       <ToastContainer
         position="top-right"
         autoClose={5000}
